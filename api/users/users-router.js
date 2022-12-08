@@ -5,6 +5,7 @@ const express = require('express');
 
 const router = express.Router();
 
+
 router.get('/', (req, res) => {
   // RETURN AN ARRAY WITH ALL THE USERS
 });
