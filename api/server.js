@@ -4,6 +4,9 @@ const server = express();
 
 server.use(express.json())
 
+const userRoute = require('./users/users-router')
+
+server.use('/api/users' , userRoute)
 // remember express by default cannot parse JSON in request bodies
 
 // global middlewares and the user's router need to be connected here
