@@ -9,9 +9,13 @@ const {validateUserId, validateUser, validatePost} = require('../middleware/midd
 const router = express.Router();
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   // RETURN AN ARRAY WITH ALL THE USERS
-  
+  UserModel.get()
+  .then(users => {
+    res.json(users)
+  })
+  .catch(next)
 });
 
 router.get('/:id',validateUserId, (req, res) => {
