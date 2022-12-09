@@ -4,7 +4,8 @@ const express = require('express');
 const UserModel = require('./users-model')
 const PostModel = require('../posts/posts-model')
 // The middleware functions also need to be required
-const {validateUserId, validateUser, validatePost} = require('../middleware/middleware')
+const {validateUserId, validateUser, validatePost} = require('../middleware/middleware');
+const { OPEN_READWRITE } = require('sqlite3');
 
 const router = express.Router();
 
@@ -35,17 +36,27 @@ router.post('/', validateUser, (req, res, next) => {
   .catch(next)
 });
 
-router.put('/:id',validateUserId, validateUser, (req, res) => {
+router.put('/:id',validateUserId, validateUser, (req, res, next) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
   console.log(req.name)
+  console.log(req.user)
+  UserModel.update(req.params.id, {name : req.name})
+  .then(user => {
+    res.json(user)
+  })
+  .catch(next)
 });
 
 router.delete('/:id',validateUserId, (req, res) => {
   // RETURN THE FRESHLY DELETED USER OBJECT
   // this needs a middleware to verify user id
   console.log(req.user)
+  UserModel.remove(req.params.id)
+  .then(user =>{
+    res.json(req.user)
+  })
 });
 
 router.get('/:id/posts',validateUserId, (req, res) => {
